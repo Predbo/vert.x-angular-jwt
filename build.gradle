@@ -14,16 +14,21 @@ repositories {
 
 version = '3.2.0'
 sourceCompatibility = '1.8'
+def mainVerticle = "java:de.predbo.vertx.HelloWorldVerticle"
 mainClassName = 'io.vertx.core.Launcher'
 
 dependencies {
     compile "io.vertx:vertx-core:$version"
 }
 
+run {
+    args = ["run", mainVerticle]
+}
+
 shadowJar {
     classifier = 'fat'
     manifest {
-        attributes 'Main-Verticle': 'de.predbo.vertx.HelloWorldVerticle'
+        attributes 'Main-Verticle': mainVerticle
     }
     mergeServiceFiles {
         include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
