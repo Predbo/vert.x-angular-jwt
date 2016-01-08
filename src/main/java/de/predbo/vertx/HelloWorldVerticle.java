@@ -6,6 +6,7 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.StaticHandler;
 
 public class HelloWorldVerticle extends AbstractVerticle {
 
@@ -17,6 +18,8 @@ public class HelloWorldVerticle extends AbstractVerticle {
 		createHttpServerJava8Style();
 		
 		createHttpServerUsingVertxWeb();
+		
+		createHttpServerUsingStaticHandler();
 	}
 
 	
@@ -45,7 +48,7 @@ public class HelloWorldVerticle extends AbstractVerticle {
 		HttpServer server = vertx.createHttpServer();
 
 		Router router = Router.router(vertx);
-
+		
 		router.route().handler(routingContext -> {
 			System.out.println("A request has arrived on port 8082 (vertx-web)!");
 
@@ -55,6 +58,16 @@ public class HelloWorldVerticle extends AbstractVerticle {
 		});
 
 		server.requestHandler(router::accept).listen(8082);
+	}
+	
+	private void createHttpServerUsingStaticHandler() {
+		HttpServer server = vertx.createHttpServer();
+
+		Router router = Router.router(vertx);
+		
+		router.route("/").handler(StaticHandler.create());
+
+		server.requestHandler(router::accept).listen(8083);
 	}
 
 }
