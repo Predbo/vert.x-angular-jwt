@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login to access the protected stuff</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Login now</h1>
+
+        <form action="/newToken" method="post" class="login">
+            <div>
+                <label for="username">Username:</label>
+                <input id="username" name="username" type="text">
+            </div>
+
+            <div>
+                <label for="password">Password:</label>
+                <input id="password" name="password" type="password">
+            </div>
+
+            <div>
+                <input type="submit" value="login" class="button">
+            </div>
+        </form>
+    </div>
+    <div class="container back">
+  		<a class="button" href="/">back</a>
+  	</div>
+</body>
+</html>

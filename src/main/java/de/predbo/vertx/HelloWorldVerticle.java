@@ -65,7 +65,7 @@ public class HelloWorldVerticle extends AbstractVerticle {
 
 		Router router = Router.router(vertx);
 		
-		router.route("/").handler(StaticHandler.create());
+		router.route("/*").handler(StaticHandler.create());
 
 		server.requestHandler(router::accept).listen(8083);
 	}
