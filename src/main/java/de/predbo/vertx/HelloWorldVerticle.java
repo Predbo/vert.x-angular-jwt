@@ -71,9 +71,16 @@ public class HelloWorldVerticle extends AbstractVerticle {
 		
 		router.route("/*").handler(StaticHandler.create().setCachingEnabled(false));
 		
-		router.route().handler(routingContext -> {
-			logger.info("A request has arrived on port 8083 (vertx-web with static content)!");
+		router.route("/*").failureHandler(failedRoutingContext -> { 
+			if (failedRoutingContext.failed()) {
+				int statusCode = failedRoutingContext.statusCode();
+				if (statusCode == 404) {
+					logger.info("file not found '" + failedRoutingContext.normalisedPath() + "'");
+				}
+			}
+			failedRoutingContext.next();
 		});
+		
 		
 		server.requestHandler(router::accept).listen(8083);
 	}
