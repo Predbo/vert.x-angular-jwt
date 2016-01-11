@@ -5,10 +5,14 @@ import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
 
 public class HelloWorldVerticle extends AbstractVerticle {
+	
+	private static final Logger logger = LoggerFactory.getLogger(HelloWorldVerticle.class);
 
 	@Override
 	public void start() {
@@ -29,7 +33,7 @@ public class HelloWorldVerticle extends AbstractVerticle {
 
 		server.requestHandler(new Handler<HttpServerRequest>() {
 			public void handle(HttpServerRequest request) {
-				System.out.println("A request has arrived on port 8080 (old school)!");
+				logger.info("A request has arrived on port 8080 (old school)!");
 				request.response().end("Hello World!");
 			}
 		});
@@ -39,7 +43,7 @@ public class HelloWorldVerticle extends AbstractVerticle {
 	
 	private void createHttpServerJava8Style() {
 		vertx.createHttpServer().requestHandler(request -> {
-				System.out.println("A request has arrived on port 8081 (Java 8 style)!");
+			logger.info("A request has arrived on port 8081 (Java 8 style)!");
 				request.response().end("Hello World!");
 		}).listen(8081);
 	}
@@ -50,7 +54,7 @@ public class HelloWorldVerticle extends AbstractVerticle {
 		Router router = Router.router(vertx);
 		
 		router.route().handler(routingContext -> {
-			System.out.println("A request has arrived on port 8082 (vertx-web)!");
+			logger.info("A request has arrived on port 8082 (vertx-web)!");
 
 			HttpServerResponse response = routingContext.response();
 			response.putHeader("content-type", "text/plain");
@@ -66,7 +70,11 @@ public class HelloWorldVerticle extends AbstractVerticle {
 		Router router = Router.router(vertx);
 		
 		router.route("/*").handler(StaticHandler.create());
-
+		
+		router.route().handler(routingContext -> {
+			logger.info("A request has arrived on port 8083 (vertx-web with static content)!");
+		});
+		
 		server.requestHandler(router::accept).listen(8083);
 	}
 
