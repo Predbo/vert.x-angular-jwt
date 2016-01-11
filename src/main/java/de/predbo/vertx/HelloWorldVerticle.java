@@ -69,7 +69,7 @@ public class HelloWorldVerticle extends AbstractVerticle {
 
 		Router router = Router.router(vertx);
 		
-		router.route("/*").handler(StaticHandler.create());
+		router.route("/*").handler(StaticHandler.create().setCachingEnabled(false));
 		
 		router.route().handler(routingContext -> {
 			logger.info("A request has arrived on port 8083 (vertx-web with static content)!");
