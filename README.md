@@ -9,4 +9,8 @@ just clone the project and call:
 
 `./gradlew run`
 
-Then open `http://localhost:8080` in your browser and see the overwhelming "Hello World" example :)
+Then open `http://localhost:8083` in your browser and see the overwhelming "Super Hero Website" example :)
+
+## eclipse integration
+Create a `run` or `debug` config, and set `de.predbo.vertx.Log4JLauncher` as main class.
+In the arguments tab, set the program arguments: `run de.predbo.vertx.HelloWorldVerticle` If we want to use config file add ` -conf <path to config>`. Set the VM argumets to `-Dvertx.options.blockedThreadCheckInterval=2147483647` (to avoid warnings ala "Thread was blocked long time")
