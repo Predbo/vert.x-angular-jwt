@@ -32,7 +32,7 @@ test {
 	}
 }
 
-def mainVerticle = "java:de.predbo.vertx.HelloWorldVerticle"
+def mainVerticle = "java:de.predbo.vertx.SampleVerticle"
 
 // Vert.x watches for file changes in all subdirectories of src/ but only for files with .java extension
 def watchForChange = 'src/**/*'
@@ -44,11 +44,11 @@ run {
 
 	args = ["run",
 		mainVerticle
-		, "-conf src/main/resources/vertx.config"
 		, "--redeploy=$watchForChange"
 		, "--launcher-class=$mainClassName"
 		, "--on-redeploy=$doOnChange"
 		]
+	
 }
 
 

@@ -18,7 +18,7 @@ public class SampleVerticle extends AbstractVerticle {
 
 	@Override
 	public void start() {
-		_listenPort = config().getInteger("http.port");
+		_listenPort = config().getInteger("http.port", 8083);
 		
 		createHttpServerOldSchool();
 
