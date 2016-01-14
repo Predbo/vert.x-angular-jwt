@@ -20,8 +20,17 @@ dependencies {
 	compile "io.vertx:vertx-core:$version"
 	compile "io.vertx:vertx-web:$version"
 	compile "log4j:log4j:1.2.17"
+
+	compile "io.vertx:vertx-unit:$version"
+	compile 'junit:junit:4.12'
 }
 
+test {
+	testLogging {
+		// Show that tests are run in the command-line output
+		events 'passed'
+	}
+}
 
 def mainVerticle = "java:de.predbo.vertx.HelloWorldVerticle"
 

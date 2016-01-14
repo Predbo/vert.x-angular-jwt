@@ -10,9 +10,9 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
 
-public class HelloWorldVerticle extends AbstractVerticle {
+public class SampleVerticle extends AbstractVerticle {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HelloWorldVerticle.class);
+	private static final Logger logger = LoggerFactory.getLogger(SampleVerticle.class);
 
 	@Override
 	public void start() {
@@ -44,7 +44,7 @@ public class HelloWorldVerticle extends AbstractVerticle {
 	private void createHttpServerJava8Style() {
 		vertx.createHttpServer().requestHandler(request -> {
 			logger.info("A request has arrived on port 8081 (Java 8 style)!");
-				request.response().end("Hello World!");
+			request.response().end("Hello World!");
 		}).listen(8081);
 	}
 
