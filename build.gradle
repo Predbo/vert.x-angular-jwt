@@ -44,6 +44,7 @@ run {
 
 	args = ["run",
 		mainVerticle
+		, "-conf src/main/resources/vertx.config"
 		, "--redeploy=$watchForChange"
 		, "--launcher-class=$mainClassName"
 		, "--on-redeploy=$doOnChange"

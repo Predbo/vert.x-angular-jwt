@@ -13,10 +13,13 @@ import io.vertx.ext.web.handler.StaticHandler;
 public class SampleVerticle extends AbstractVerticle {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SampleVerticle.class);
+	
+	private Integer _listenPort;
 
 	@Override
 	public void start() {
-
+		_listenPort = config().getInteger("http.port");
+		
 		createHttpServerOldSchool();
 
 		createHttpServerJava8Style();
@@ -82,7 +85,7 @@ public class SampleVerticle extends AbstractVerticle {
 		});
 		
 		
-		server.requestHandler(router::accept).listen(8083);
+		server.requestHandler(router::accept).listen(_listenPort);
 	}
 
 }

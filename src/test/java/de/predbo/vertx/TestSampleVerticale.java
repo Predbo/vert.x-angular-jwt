@@ -14,7 +14,7 @@ public class TestSampleVerticale extends SampleVerticaleTestBase {
 	public void assureThatUndefinedPathWillLedToNotFound404Response(TestContext context) {
 		final Async async = context.async();
 
-		_vertx.createHttpClient().getNow(8083, "localhost", "/asd", response -> {
+		_vertx.createHttpClient().getNow(_port, "localhost", "/asd", response -> {
 			response.handler(body -> {
 				String responsePayload = body.toString();
 				System.out.println("Response was: " + responsePayload);
@@ -35,16 +35,18 @@ public class TestSampleVerticale extends SampleVerticaleTestBase {
 		String response = sendHttpRequestAndWaitForResponse(context, "/login.html");
 		context.assertTrue(response.contains("Login now"));
 	}
-	
-	
-	
-	
+
+
+
+
 	private String sendHttpRequestAndWaitForResponse(TestContext context, String path) {
 		final Async async = context.async();
-		_vertx.createHttpClient().getNow(8083, "localhost", path, response -> {
+		_vertx.createHttpClient().getNow(_port, "localhost", path, response -> {
+			context.assertEquals(response.statusCode(), 200);
+		    context.assertEquals(response.headers().get("content-type"), "text/html");
 			response.handler(body -> {
 				context.put("responseMessage", body.toString());
-//				System.out.println("Response was: " + body.toString());
+				System.out.println("Response was: " + body.toString());
 				async.complete();
 			});
 		});
