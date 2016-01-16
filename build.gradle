@@ -34,7 +34,7 @@ test {
 	}
 }
 
-def mainVerticle = "java:de.predbo.vertx.SampleVerticle"
+def mainVerticle = "java:de.predbo.vertx.MainVerticle"
 
 // Vert.x watches for file changes in all subdirectories of src/ but only for files with .java extension
 def watchForChange = 'src/**/*'

@@ -1,4 +1,4 @@
-package de.predbo.vertx;
+package de.predbo.vertx.api.user;
 
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -7,16 +7,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import de.predbo.vertx.model.User;
-
 public class UserRegistry {
 
-	private static final Logger _logger = LoggerFactory.getLogger(SampleVerticle.class);
+	private static final Logger _logger = LoggerFactory.getLogger(UserRegistry.class);
 	private static final AtomicInteger USER_IDS = new AtomicInteger(0);
 	
 	private final Map<Integer, User> _registry = new LinkedHashMap<>();
 
-	protected void createSampleRegistry() {
+	UserRegistry() {
+		reset();
+	}
+	
+	void reset() {
 		_registry.clear();
 		USER_IDS.set(0);
 		registerUser(new User("Hugo", "Müller"));
@@ -24,28 +26,28 @@ public class UserRegistry {
 		registerUser(new User("Max", "Kruse"));
 	}
 
-	public Map<Integer, User> getUsers() {
+	Map<Integer, User> getUsers() {
 		return _registry;
 	}
 	
-	public User getUser(Integer id) {
+	User getUser(Integer id) {
 		return _registry.get(id);
 	}
 
-	public void registerUser(User user) {
+	void registerUser(User user) {
 		user.setId(USER_IDS.incrementAndGet());
 		_registry.put(user.getId(), user);
 	}
 	
-	public void unregisterUser(Integer id) {
+	void unregisterUser(Integer id) {
 		_registry.remove(id);
 	}
 	
-	public void updateUser(Integer id, User user) {
+	void updateUser(Integer id, User user) {
 		_registry.put(id, user);
 	}
 	
-	public User getUserByUnvalidatedId(String idString)  {
+	User getUserByUnvalidatedId(String idString)  {
 		User user = null;
 		_logger.info(" try to saftly get user with id " + idString);
 		try {

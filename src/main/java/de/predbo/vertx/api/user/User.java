@@ -1,4 +1,4 @@
-package de.predbo.vertx.model;
+package de.predbo.vertx.api.user;
 
 
 public class User {
@@ -12,7 +12,9 @@ public class User {
 		_lastname = lastname;
 	}
 
-	public User() {}
+	public User() {
+		// DefaultConstructor needed for JSON Serialization/Mapping
+	}
 
 	public String getName() {
 		return _name;

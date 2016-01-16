@@ -5,25 +5,25 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
-public class SampleVerticaleTestBase {
+public class MainVerticaleTestBase {
 	
 	protected static final String BASE_URL = "http://localhost:8080/";
 	
-	protected Vertx _vertx;
-	protected int _port = 8080;
+	protected static Vertx _vertx;
+	protected static int _port = 8080;
 
-	@Before
-	public void deploySampleVerticale(TestContext context) {
+	@BeforeClass
+	public static void deploySampleVerticale(TestContext context) {
 		_vertx = Vertx.vertx();
 		DeploymentOptions options = new DeploymentOptions().setConfig(new JsonObject().put("http.port", _port));
-		_vertx.deployVerticle(SampleVerticle.class.getName(), options, context.asyncAssertSuccess());
+		_vertx.deployVerticle(MainVerticle.class.getName(), options, context.asyncAssertSuccess());
 	}
 	
-	@After
-	public void stopSampleVerticale(TestContext context) {
+	@AfterClass
+	public static void stopSampleVerticale(TestContext context) {
 		_vertx.close(context.asyncAssertSuccess());
 	}
 	

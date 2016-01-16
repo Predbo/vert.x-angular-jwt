@@ -15,10 +15,10 @@ import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import de.predbo.vertx.model.User;
+import de.predbo.vertx.api.user.User;
 
 @RunWith(VertxUnitRunner.class)
-public class TestUserApi extends SampleVerticaleTestBase {
+public class TestUserApi extends MainVerticaleTestBase {
 	
 	@Before
 	public void resetUserRegistry() throws UnirestException {

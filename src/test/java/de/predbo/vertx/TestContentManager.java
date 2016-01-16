@@ -11,7 +11,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @RunWith(VertxUnitRunner.class)
-public class TestStaticResources extends SampleVerticaleTestBase {
+public class TestContentManager extends MainVerticaleTestBase {
 
 	
 	@Test

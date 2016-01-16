@@ -26,7 +26,7 @@ Any code changes will let to an automatically redeployment of the app.
 
 * call `./gradlew clean eclipse`, open eclipse and Import as existing eclipse project.
 * Create a `run` or `debug` config, and set `de.predbo.vertx.Log4JLauncher` as main class.
-* In the arguments tab, set the program arguments: `run de.predbo.vertx.StandardVerticle -conf src/main/resources/vertx.config`. 
+* In the arguments tab, set the program arguments: `run de.predbo.vertx.MainVerticle -conf src/main/resources/vertx.config`. 
 * Set the VM argumets to `-Dvertx.options.blockedThreadCheckInterval=600000` (to avoid warnings ala "Thread was blocked long time")
 
 

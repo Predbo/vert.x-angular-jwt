@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(VertxUnitRunner.class)
-public class StressTest extends SampleVerticaleTestBase {
+public class StressTest extends MainVerticaleTestBase {
 
 	private final static int NUMBER_OF_ALL_REQUESTS = 1_000;
 	private final static int NUMBER_OF_PARALLEL_REQUESTS = 10;
