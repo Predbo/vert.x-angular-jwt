@@ -11,7 +11,7 @@ import org.junit.Before;
 public class SampleVerticaleTestBase {
 	
 	protected Vertx _vertx;
-	protected int _port = 8083;
+	protected int _port = 8080;
 
 	@Before
 	public void deploySampleVerticale(TestContext context) {
