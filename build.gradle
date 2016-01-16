@@ -21,9 +21,10 @@ dependencies {
 	compile "io.vertx:vertx-web:$version"
 	compile "log4j:log4j:1.2.17"
 
-	compile "io.vertx:vertx-unit:$version"
-	compile "junit:junit:4.12"
-	compile "commons-io:commons-io:2.4"
+	testCompile "io.vertx:vertx-unit:$version"
+	testCompile "junit:junit:4.12"
+	testCompile "commons-io:commons-io:2.4"
+	testCompile "com.mashape.unirest:unirest-java:1.4.7"
 }
 
 test {

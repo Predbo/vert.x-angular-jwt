@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(VertxUnitRunner.class)
-public class TestSampleVerticaleStressTest extends SampleVerticaleTestBase {
+public class StressTest extends SampleVerticaleTestBase {
 
 	private final static int NUMBER_OF_ALL_REQUESTS = 1_000;
 	private final static int NUMBER_OF_PARALLEL_REQUESTS = 10;
@@ -65,7 +65,7 @@ public class TestSampleVerticaleStressTest extends SampleVerticaleTestBase {
 			InputStream inputStream = null;
 			HttpURLConnection connection = null;
 			try {
-				URL url = new URL("http://localhost:8080/login.html");
+				URL url = new URL(BASE_URL + "login.html");
 				connection = (HttpURLConnection)url.openConnection();
 				connection.setRequestMethod("GET");
 				connection.connect();

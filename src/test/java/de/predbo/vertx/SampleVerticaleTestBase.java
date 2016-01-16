@@ -10,6 +10,8 @@ import org.junit.Before;
 
 public class SampleVerticaleTestBase {
 	
+	protected static final String BASE_URL = "http://localhost:8080/";
+	
 	protected Vertx _vertx;
 	protected int _port = 8080;
 
@@ -19,14 +21,10 @@ public class SampleVerticaleTestBase {
 		DeploymentOptions options = new DeploymentOptions().setConfig(new JsonObject().put("http.port", _port));
 		_vertx.deployVerticle(SampleVerticle.class.getName(), options, context.asyncAssertSuccess());
 	}
-
+	
 	@After
 	public void stopSampleVerticale(TestContext context) {
 		_vertx.close(context.asyncAssertSuccess());
 	}
 	
-	
-	
-	
-
 }
