@@ -7,14 +7,20 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import de.predbo.vertx.Provider;
-import de.predbo.vertx.MainVerticle;
 
 
 public class UserApiProvider implements Provider {
 	
 	private static final Logger _logger = LoggerFactory.getLogger(UserApiProvider.class);
 	
-	private final UserRegistry _userRegistry = new UserRegistry();
+	private final UserRegistry _userRegistry;
+
+
+	public UserApiProvider(UserRegistry userRegistry) {
+		_userRegistry = userRegistry;
+	}
+
+
 
 	@Override
 	public Router createSubRouter(Vertx vertx) {
@@ -28,7 +34,6 @@ public class UserApiProvider implements Provider {
 		router.put("/users/:id").handler(this::updateUser);
         return router;
     }
-	
 	
 	
 	

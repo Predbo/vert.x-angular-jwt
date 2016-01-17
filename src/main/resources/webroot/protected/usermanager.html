@@ -49,7 +49,7 @@
     });
 
     function create(name, lastname) {
-        $.post("/api/users", JSON.stringify({name: name, lastname: lastname}), function () {
+        $.post("/protected/api/users", JSON.stringify({name: name, lastname: lastname}), function () {
             load();
         }, "json");
     }
@@ -57,7 +57,7 @@
     function remove(id) {
         $.ajax({
             method: "DELETE",
-            url: "/api/users/" + id
+            url: "/protected/api/users/" + id
         }).done(function () {
             load();
         });
@@ -66,7 +66,7 @@
     function update(id, name, lastname) {
         $.ajax({
             method: "PUT",
-            url: "/api/users/" + id,
+            url: "/protected/api/users/" + id,
             data: JSON.stringify({name: name, lastname: lastname})
         }).done(function () {
             load();
@@ -74,7 +74,7 @@
     }
     
     function resetUserList() {
-        $.get("/api/users/reset", function(data) {
+        $.get("/protected/api/users/reset", function(data) {
         	console.info(data );
         	load();
         });
@@ -82,7 +82,7 @@
 
     function load() {
         $("#content").children().remove();
-        $.getJSON("/api/users", function (data) {
+        $.getJSON("/protected/api/users", function (data) {
             $.each(data, function (key, val) {
                 $("<tr><td>" + val.id + "</td><td>" + val.name + "</td><td>" + val.lastname + "</td>" +
                         "<td>" +

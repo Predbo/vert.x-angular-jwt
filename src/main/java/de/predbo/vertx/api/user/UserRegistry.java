@@ -5,6 +5,7 @@ import io.vertx.core.logging.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserRegistry {
@@ -14,18 +15,27 @@ public class UserRegistry {
 	
 	private final Map<Integer, User> _registry = new LinkedHashMap<>();
 
-	UserRegistry() {
+	public UserRegistry() {
 		reset();
 	}
 	
 	void reset() {
 		_registry.clear();
 		USER_IDS.set(0);
-		registerUser(new User("Hugo", "Müller"));
-		registerUser(new User("Berta", "Schmidt"));
-		registerUser(new User("Max", "Kruse"));
+		registerUser(new User("Hugo", "Müller", "geheim"));
+		registerUser(new User("Berta", "Schmidt", "geheim"));
+		registerUser(new User("Max", "Kruse", "geheim"));
 	}
 
+	public User getUserByName(String name) {
+		for (Entry<Integer, User> registryEntry : _registry.entrySet()) {
+			if (registryEntry.getValue().getName().equalsIgnoreCase(name)) {
+				return registryEntry.getValue();
+			}
+		}
+		return null;
+	}
+	
 	Map<Integer, User> getUsers() {
 		return _registry;
 	}

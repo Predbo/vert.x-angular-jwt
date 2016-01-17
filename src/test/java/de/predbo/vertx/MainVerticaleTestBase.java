@@ -14,6 +14,7 @@ public class MainVerticaleTestBase {
 	
 	protected static Vertx _vertx;
 	protected static int _port = 8080;
+	protected static String _validJwtToken = "auth_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYXVsbyIsImlhdCI6MTQ1Mjk5NjYyNH0=.tX5mXLIghs1-v24o6uA1fZnqODWAU1ZvXyQFAXchXwg=";
 
 	@BeforeClass
 	public static void deploySampleVerticale(TestContext context) {

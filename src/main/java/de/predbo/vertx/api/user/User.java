@@ -6,10 +6,12 @@ public class User {
 	private int _id;
 	private String _name;
 	private String _lastname;
+	private String _password;
 
-	public User(String name, String lastname) {
+	public User(String name, String lastname, String password) {
 		_name = name;
 		_lastname = lastname;
+		_password = password;
 	}
 
 	public User() {
@@ -38,5 +40,13 @@ public class User {
 	
 	public void setId(int id) {
 		_id = id;
+	}
+
+	public String getPassword() {
+		return _password;
+	}
+
+	public void setPassword(String _password) {
+		this._password = _password;
 	}
 }

@@ -53,7 +53,7 @@ public class TestUserApi extends MainVerticaleTestBase {
 	
 	@Test 
 	public void assureThatAddUserWorks(TestContext context) throws UnirestException {
-		HttpResponse<User> userResponse = addUser("Günther", "Fischer");
+		HttpResponse<User> userResponse = addUser("Günther", "Fischer", "geheim");
 		
 		User user = userResponse.getBody();
 		context.assertEquals(201, userResponse.getStatus())
@@ -74,7 +74,7 @@ public class TestUserApi extends MainVerticaleTestBase {
 	
 	@Test 
 	public void assureThatUpdateUserWorks(TestContext context) throws UnirestException {
-		HttpResponse<User> userResponse = updateUser(1, "Günther", "Fischer");
+		HttpResponse<User> userResponse = updateUser(1, "Günther", "Fischer", "geheim");
 		
 		User user = userResponse.getBody();
 		context.assertEquals(200, userResponse.getStatus())
@@ -89,7 +89,7 @@ public class TestUserApi extends MainVerticaleTestBase {
 	public void assureThatDeleteAndAddCreatesNewUserId(TestContext context) throws UnirestException {
 		deleteUser(2);
 		assertNoUserById(context, 2);
-		addUser("Frank", "Werwolf");
+		addUser("Frank", "Werwolf", "geheim");
 		assertUserById(context, 4, "Frank", "Werwolf");
 	}
 
@@ -97,29 +97,29 @@ public class TestUserApi extends MainVerticaleTestBase {
 
 	
 	private HttpResponse<User[]> getAllUsers() throws UnirestException {
-		return Unirest.get(BASE_URL + "api/users").asObject(User[].class);
+		return Unirest.get(BASE_URL + "protected/api/users").header("cookie", _validJwtToken).asObject(User[].class);
 	}
 	
 	private HttpResponse<User> getUser(int id) throws UnirestException {
-		return Unirest.get(BASE_URL + "api/users/" + id).asObject(User.class);
+		return Unirest.get(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtToken).asObject(User.class);
 	}
 	
-	private HttpResponse<User> addUser(String name, String lastname) throws UnirestException {
-		User user = new User(name, lastname);
-		return Unirest.post(BASE_URL + "api/users").body(user).asObject(User.class);
+	private HttpResponse<User> addUser(String name, String lastname, String password) throws UnirestException {
+		User user = new User(name, lastname, password);
+		return Unirest.post(BASE_URL + "protected/api/users").header("Cookie", _validJwtToken).body(user).asObject(User.class);
 	}
 	
-	private HttpResponse<User> updateUser(int id, String name, String lastname) throws UnirestException {
-		User user = new User(name, lastname);
-		return Unirest.put(BASE_URL + "api/users/" + id).body(user).asObject(User.class);
+	private HttpResponse<User> updateUser(int id, String name, String lastname, String password) throws UnirestException {
+		User user = new User(name, lastname, password);
+		return Unirest.put(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtToken).body(user).asObject(User.class);
 	}
 	
 	private HttpResponse<String> deleteUser(int id) throws UnirestException {
-		return Unirest.delete(BASE_URL + "api/users/" + id).asString();
+		return Unirest.delete(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtToken).asString();
 	}
 	
 	private HttpResponse<String> reset() throws UnirestException {
-		return Unirest.get(BASE_URL + "api/users/reset").asString();
+		return Unirest.get(BASE_URL + "protected/api/users/reset").header("Cookie", _validJwtToken).asString();
 	}
 	
 	
@@ -138,7 +138,7 @@ public class TestUserApi extends MainVerticaleTestBase {
 		HttpResponse<String> response = Unirest.get(BASE_URL + "api/users/" + id).asString();
 		
 		context.assertEquals(404, response.getStatus());
-		context.assertEquals("There is no user with id '" + id + "'", response.getBody());
+		context.assertEquals("Not Found", response.getBody());
 	}
 	
 	
