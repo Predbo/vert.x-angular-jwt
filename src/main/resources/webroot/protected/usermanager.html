@@ -48,8 +48,8 @@
         initModal();
     });
 
-    function create(name, lastname) {
-        $.post("/protected/api/users", JSON.stringify({name: name, lastname: lastname}), function () {
+    function create(name, lastname, password) {
+        $.post("/protected/api/users", JSON.stringify({name: name, lastname: lastname, password: password}), function () {
             load();
         }, "json");
     }
@@ -63,11 +63,11 @@
         });
     }
 
-    function update(id, name, lastname) {
+    function update(id, name, lastname, password) {
         $.ajax({
             method: "PUT",
             url: "/protected/api/users/" + id,
-            data: JSON.stringify({name: name, lastname: lastname})
+            data: JSON.stringify({name: name, lastname: lastname, password: password})
         }).done(function () {
             load();
         });
@@ -91,6 +91,7 @@
                         "data-target='#userModal' " +
                         "data-name='" + val.name + "' " +
                         "data-lastname='" + val.lastname + "' " +
+                        "data-password='" + val.password + "' " +
                         "data-id='" + val.id + "'>" +
                         "<span class='glyphicon glyphicon-pencil'></span>" +
                         "</button>" +
@@ -127,16 +128,18 @@
                 modal.find('.modal-title').text("Add user");
                 modal.find('#user-name').val("");
                 modal.find('#user-lastname').val("");
+                modal.find('#user-password').val("");
                 userAction.click(function () {
-                    create($("#user-name").val(), $("#user-lastname").val());
+                    create($("#user-name").val(), $("#user-lastname").val(), $("#user-password").val());
                     $('#userModal').modal('toggle');
                 });
             } else {
                 modal.find('.modal-title').text("Edit user");
                 modal.find('#user-name').val(button.data("name"));
                 modal.find('#user-lastname').val(button.data("lastname"));
+                modal.find('#user-password').val(button.data("password"));
                 userAction.click(function () {
-                    update(id, $("#user-name").val(), $("#user-lastname").val());
+                    update(id, $("#user-name").val(), $("#user-lastname").val(), $("#user-password").val());
                     $('#userModal').modal('toggle');
                 });
             }
@@ -160,6 +163,10 @@
                         <label for="user-lastname" class="control-label">Lastname:</label>
                         <input type="text" class="form-control" id="user-lastname">
                     </div>
+                    <div class="form-group">
+                        <label for="user-password" class="control-label">Password:</label>
+                        <input type="password" class="form-control" id="user-password">
+                    </div>                    
                 </form>
             </div>
             <div class="modal-footer">
