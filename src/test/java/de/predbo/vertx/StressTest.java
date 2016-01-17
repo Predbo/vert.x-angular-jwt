@@ -21,9 +21,22 @@ public class StressTest extends MainVerticaleTestBase {
 	private final static int NUMBER_OF_ALL_REQUESTS = 1_000;
 	private final static int NUMBER_OF_PARALLEL_REQUESTS = 10;
 	private Async _async;
+	private String _url;
 
 	@Test 
-	public void doStressTest(TestContext context) throws InterruptedException {
+	public void doStressTestForStaticContent(TestContext context) throws InterruptedException {
+		_url = BASE_URL + "login.html";
+		doStressTest(context);
+	}
+	
+	@Test 
+	public void doStressTestForIssueToken(TestContext context) throws InterruptedException {
+		_url = BASE_URL + "issueToken?username=Hugo&password=geheim";
+		doStressTest(context);
+	}
+	
+	
+	private void doStressTest(TestContext context) throws InterruptedException {
 		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_PARALLEL_REQUESTS);
 		_async = context.async(NUMBER_OF_ALL_REQUESTS);
 		for (int i=0; i<=NUMBER_OF_ALL_REQUESTS ; i++) {
@@ -34,6 +47,9 @@ public class StressTest extends MainVerticaleTestBase {
 		
 		executorService.shutdown();
 	}
+	
+	
+	
 
 	private class RequestSender implements Runnable {
 
@@ -65,13 +81,13 @@ public class StressTest extends MainVerticaleTestBase {
 			InputStream inputStream = null;
 			HttpURLConnection connection = null;
 			try {
-				URL url = new URL(BASE_URL + "login.html");
+				URL url = new URL(_url);
 				connection = (HttpURLConnection)url.openConnection();
 				connection.setRequestMethod("GET");
 				connection.connect();
 				inputStream = connection.getInputStream();
 				// to ensure response stream is fully consumed
-				IOUtils.toString(inputStream, "UTF-8"); 
+				IOUtils.toString(inputStream, "UTF-8");
 			} catch (Exception e) {
 				System.err.println("Request failed" + e);
 			} finally {

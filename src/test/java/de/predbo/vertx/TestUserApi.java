@@ -3,15 +3,11 @@ package de.predbo.vertx;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -45,7 +41,7 @@ public class TestUserApi extends MainVerticaleTestBase {
 	}
 	
 	@Test 
-	public void assureThatGetUser(TestContext context) throws UnirestException {
+	public void assureThatGetUserWithNonExistingIdLetsTo404(TestContext context) throws UnirestException {
 		assertNoUserById(context, 0);
 	}
 
@@ -141,29 +137,4 @@ public class TestUserApi extends MainVerticaleTestBase {
 		context.assertEquals("Not Found", response.getBody());
 	}
 	
-	
-	
-	
-	@Before
-	public void initJacksonObjectMapperForUniRest() {
-		Unirest.setObjectMapper(new ObjectMapper() {
-		    private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
-
-		    public <T> T readValue(String value, Class<T> valueType) {
-		        try {
-		            return jacksonObjectMapper.readValue(value, valueType);
-		        } catch (IOException e) {
-		            throw new RuntimeException(e);
-		        }
-		    }
-
-		    public String writeValue(Object value) {
-		        try {
-		            return jacksonObjectMapper.writeValueAsString(value);
-		        } catch (JsonProcessingException e) {
-		            throw new RuntimeException(e);
-		        }
-		    }
-		});
-	}
 }

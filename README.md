@@ -1,7 +1,8 @@
 # vert.x-angular-jwt
-Playground to get in touch with vert.x, angularJS and stateless authentication based on JWT. Currently the Angular and JWT part is still missing, the following aspects are already considered:
+Playground to get in touch with vert.x, angularJS and stateless authentication based on JWT. Currently the Angular part is still missing, the following aspects are already considered:
 * vertx-core
 * vertx-web
+* vertx-auth-jwt
 * Logging with log4j
 * CRUD REST API
 * junit tests with vertx-unit, junit and unirest
@@ -21,6 +22,9 @@ just clone the project and call:
 
 Then open `http://localhost:8080` in your browser and see the overwhelming "Super Hero Website" example :)
 Any code changes will let to an automatically redeployment of the app.
+
+### Unit tests
+just run `./gradlew test`
 
 ### Eclipse integration
 

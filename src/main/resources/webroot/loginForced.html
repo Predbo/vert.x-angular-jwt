@@ -38,8 +38,12 @@
 		$(function() {
 			$(".issueToken").unbind().click(function() {
 				$.get("/issueToken?username="+$("#username").val()+"&password="+$("#password").val(), function(data) {
-					alert(data);
-					//window.location.href = "/protected/index.html";
+					console.log(data);
+					if (data == "Login successfull") {
+						window.location.href = "/protected/index.html";
+					} else {
+						alert(data);
+					}
 				});
 			});
 		});
