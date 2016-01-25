@@ -1,6 +1,8 @@
 package de.predbo.vertx;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.web.Router;
@@ -27,10 +29,19 @@ public class MainVerticle extends AbstractVerticle {
 
 		JWTAuth jwtAuthProvider = JWTAuth.create(vertx, authConfig);
 		UserApiProvider userApiProvider = new UserApiProvider(_userRegistry);
-		
+		EventBus eventBus = vertx.eventBus();
+	    vertx.deployVerticle("de.predbo.vertx.microservices.LoggingService", new DeploymentOptions());
+	    System.out.println("[Main] Running in " + Thread.currentThread().getName());
 		
 		Router router = Router.router(vertx);
 		router.route().handler(CookieHandler.create());
+		
+		router.route("/specialLogging*").handler(routingContext -> {
+			String eventBusMessage = "received request for path: '" + routingContext.normalisedPath() + "'";
+			eventBus.send("services.internal.logging", eventBusMessage);
+			routingContext.response().end("direct http response, while logging is still ongoing");
+		});
+		
 		router.get("/issueToken").handler(IssueTokenHandler.create(jwtAuthProvider, _userRegistry));
 		router.route("/protected/*").handler(JwtAuthHandler.create(jwtAuthProvider));
 		router.mountSubRouter("/protected/api/", userApiProvider.createSubRouter(vertx));
