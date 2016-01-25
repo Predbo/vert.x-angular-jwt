@@ -93,29 +93,29 @@ public class TestUserApi extends MainVerticaleTestBase {
 
 	
 	private HttpResponse<User[]> getAllUsers() throws UnirestException {
-		return Unirest.get(BASE_URL + "protected/api/users").header("cookie", _validJwtToken).asObject(User[].class);
+		return Unirest.get(BASE_URL + "protected/api/users").header("cookie", _validJwtTokenAsCookie).asObject(User[].class);
 	}
 	
 	private HttpResponse<User> getUser(int id) throws UnirestException {
-		return Unirest.get(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtToken).asObject(User.class);
+		return Unirest.get(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtTokenAsCookie).asObject(User.class);
 	}
 	
 	private HttpResponse<User> addUser(String name, String lastname, String password) throws UnirestException {
 		User user = new User(name, lastname, password);
-		return Unirest.post(BASE_URL + "protected/api/users").header("Cookie", _validJwtToken).body(user).asObject(User.class);
+		return Unirest.post(BASE_URL + "protected/api/users").header("Cookie", _validJwtTokenAsCookie).body(user).asObject(User.class);
 	}
 	
 	private HttpResponse<User> updateUser(int id, String name, String lastname, String password) throws UnirestException {
 		User user = new User(name, lastname, password);
-		return Unirest.put(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtToken).body(user).asObject(User.class);
+		return Unirest.put(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtTokenAsCookie).body(user).asObject(User.class);
 	}
 	
 	private HttpResponse<String> deleteUser(int id) throws UnirestException {
-		return Unirest.delete(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtToken).asString();
+		return Unirest.delete(BASE_URL + "protected/api/users/" + id).header("Cookie", _validJwtTokenAsCookie).asString();
 	}
 	
 	private HttpResponse<String> reset() throws UnirestException {
-		return Unirest.get(BASE_URL + "protected/api/users/reset").header("Cookie", _validJwtToken).asString();
+		return Unirest.get(BASE_URL + "protected/api/users/reset").header("Cookie", _validJwtTokenAsCookie).asString();
 	}
 	
 	

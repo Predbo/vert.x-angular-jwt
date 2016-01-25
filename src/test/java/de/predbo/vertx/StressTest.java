@@ -101,7 +101,7 @@ public class StressTest extends MainVerticaleTestBase {
 				connection = (HttpURLConnection)url.openConnection();
 				connection.setRequestMethod("GET");
 				if (_addJwtTokenAsCookie) {
-					connection.setRequestProperty("cookie", _validJwtToken);
+					connection.setRequestProperty("cookie", _validJwtTokenAsCookie);
 				}
 				connection.connect();
 				inputStream = connection.getInputStream();

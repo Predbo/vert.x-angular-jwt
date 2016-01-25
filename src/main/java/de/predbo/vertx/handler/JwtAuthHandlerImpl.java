@@ -36,6 +36,7 @@ public class JwtAuthHandlerImpl extends AuthHandlerImpl implements JwtAuthHandle
 				token = getJwtTokenFromCookie(request);
 				if (token == null) {
 					context.response().putHeader("location", "/loginForced.html").setStatusCode(302).end();
+					_logger.warn("No JWT Auth Token found, neither in Cookie nor in Authorization Header so redirect to login page");
 					return;
 				} 
 			}
@@ -61,11 +62,11 @@ public class JwtAuthHandlerImpl extends AuthHandlerImpl implements JwtAuthHandle
 			String[] parts = cookies.split(" ");
 			for (String string : parts) {
 				if (string.startsWith("auth_token=")) {
+					_logger.info("found JWT Auth Token in Cookie");
 					return string.substring(11);
 				}
 			}
 		}
-		_logger.warn("No JWT token in Cookies found");
 		return null;
 	}
 
@@ -78,10 +79,9 @@ public class JwtAuthHandlerImpl extends AuthHandlerImpl implements JwtAuthHandle
 				final String scheme = parts[0], credentials = parts[1];
 
 				if (BEARER.matcher(scheme).matches()) {
+					_logger.info("found JWT Auth Token in Authorization Header");
 					return credentials;
 				}
-			} else {
-				_logger.warn("wrong format, should be 'Authorization: Bearer [token]'");
 			}
 		}
 		return null;

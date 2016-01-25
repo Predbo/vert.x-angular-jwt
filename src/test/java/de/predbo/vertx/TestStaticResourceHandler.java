@@ -48,8 +48,8 @@ public class TestStaticResourceHandler extends MainVerticaleTestBase {
 	}
 	
 	@Test 
-	public void assureThatAuthenticatedAccessToUsermanagerWorks(TestContext context) throws UnirestException {
-		HttpResponse<String> jsonResponse = Unirest.get(BASE_URL + "protected/usermanager.html").header("cookie", _validJwtToken).asString();
+	public void assureThatAuthenticatedAccessViaCookieToUsermanagerWorks(TestContext context) throws UnirestException {
+		HttpResponse<String> jsonResponse = Unirest.get(BASE_URL + "protected/usermanager.html").header("cookie", _validJwtTokenAsCookie).asString();
 		
 		assertStatus200WithHtmlContent(context, jsonResponse);
 		context.assertTrue(jsonResponse.getBody().contains("<h2>On this protected site you can manage all users</h2>"));
@@ -64,8 +64,16 @@ public class TestStaticResourceHandler extends MainVerticaleTestBase {
 	}
 	
 	@Test 
-	public void assureThatAuthenticatedAccessToProtectedIndexWorks(TestContext context) throws UnirestException {
-		HttpResponse<String> jsonResponse = Unirest.get(BASE_URL + "protected/index.html").header("Cookie", _validJwtToken).asString();
+	public void assureThatAuthenticatedAccessViaCookieToProtectedIndexWorks(TestContext context) throws UnirestException {
+		HttpResponse<String> jsonResponse = Unirest.get(BASE_URL + "protected/index.html").header("Cookie", _validJwtTokenAsCookie).asString();
+		
+		assertStatus200WithHtmlContent(context, jsonResponse);
+		context.assertTrue(jsonResponse.getBody().contains("you successfully have entered protected area"));
+	}
+	
+	@Test 
+	public void assureThatAuthenticatedAccessViaBasicAuthToProtectedIndexWorks(TestContext context) throws UnirestException {
+		HttpResponse<String> jsonResponse = Unirest.get(BASE_URL + "protected/index.html").header("Authorization", _validJwtTokenAsAuthHeader).asString();
 		
 		assertStatus200WithHtmlContent(context, jsonResponse);
 		context.assertTrue(jsonResponse.getBody().contains("you successfully have entered protected area"));
