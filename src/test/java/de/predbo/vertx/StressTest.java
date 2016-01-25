@@ -25,7 +25,7 @@ public class StressTest extends MainVerticaleTestBase {
 
 	@Test 
 	public void doStressTestForStaticContent(TestContext context) throws InterruptedException {
-		_url = BASE_URL + "login.html";
+		_url = BASE_URL + "10kbTest.html";
 		doStressTest(context);
 	}
 	
@@ -35,12 +35,24 @@ public class StressTest extends MainVerticaleTestBase {
 		doStressTest(context);
 	}
 	
+	@Test 
+	public void doStressTestWithJwtTokenVerfification(TestContext context) throws InterruptedException {
+		_url = BASE_URL + "protected/10kbTest.html";
+		doStressTest(context, true);
+	}
+	
+	
+	
 	
 	private void doStressTest(TestContext context) throws InterruptedException {
+		doStressTest(context, false);
+	}
+	
+	private void doStressTest(TestContext context, boolean addJwtTokenAsCookie) throws InterruptedException {
 		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_PARALLEL_REQUESTS);
 		_async = context.async(NUMBER_OF_ALL_REQUESTS);
-		for (int i=0; i<=NUMBER_OF_ALL_REQUESTS ; i++) {
-			executorService.execute(new RequestSender(i));
+		for (int i=1; i<=NUMBER_OF_ALL_REQUESTS ; i++) {
+			executorService.execute(new RequestSender(i, addJwtTokenAsCookie));
 		}
 
 		_async.awaitSuccess();	
@@ -48,15 +60,19 @@ public class StressTest extends MainVerticaleTestBase {
 		executorService.shutdown();
 	}
 	
+
+	
 	
 	
 
 	private class RequestSender implements Runnable {
 
 		private final int _requestNumber;
+		private final boolean _addJwtTokenAsCookie;
 
-		private RequestSender(int requestNumber) {
+		private RequestSender(int requestNumber, boolean jwtTokenAsCookie) {
 			_requestNumber = requestNumber;
+			_addJwtTokenAsCookie = jwtTokenAsCookie;
 		}
 		
 		@Override
@@ -84,10 +100,14 @@ public class StressTest extends MainVerticaleTestBase {
 				URL url = new URL(_url);
 				connection = (HttpURLConnection)url.openConnection();
 				connection.setRequestMethod("GET");
+				if (_addJwtTokenAsCookie) {
+					connection.setRequestProperty("cookie", _validJwtToken);
+				}
 				connection.connect();
 				inputStream = connection.getInputStream();
 				// to ensure response stream is fully consumed
 				IOUtils.toString(inputStream, "UTF-8");
+//				System.out.println(IOUtils.toString(inputStream, "UTF-8"));
 			} catch (Exception e) {
 				System.err.println("Request failed" + e);
 			} finally {
