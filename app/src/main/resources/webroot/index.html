@@ -27,9 +27,32 @@
 				  		<span class="glyphicon glyphicon-chevron-right"></span>
 				  		Usermanager (protected)
 			  		</a>
+				  	<a href="/testeventbus.html" class="list-group-item">
+				  		<span class="glyphicon glyphicon-chevron-right"></span>
+				  		Eventbus Test
+			  		</a>
+			  		<a href="#" id="microservicecheck" class="list-group-item">
+				  		<span class="glyphicon glyphicon-chevron-right"></span>
+				  		check MicroService
+			  		</a>
 				</div>
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$("#microservicecheck").click(function() {
+			$.get("/microservice")
+				.success(function(result) {
+					$("#microservicecheck").html(result + ", check again")
+					.addClass('list-group-item-success')
+					.removeClass('list-group-item-danger');
+				})
+				.error(function(jqXHR, textStatus, errorThrown) {
+					$("#microservicecheck").html(jqXHR.responseText + ", check again")
+					.addClass('list-group-item-danger')
+					.removeClass('list-group-item-success');
+			});
+		});
+	</script>
 </body>
 </html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Eventbus Test</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container" role="main">
+		<div class="jumbotron">
+			<h1>Eventbus Test</h1>
+		</div>
+		<div class="page-header">
+	        <a class="btn btn-primary" href="/"> Back </a>
+        </div>
+		<div class="row ">
+			<div class="col-md-4">
+				<form id="sendform">
+					<div class="form-group">
+						<label for="text2send">Request-Response</label> 
+						<input type="text" class="form-control" id="text2send" placeholder="Hello it's me">
+					</div>
+					<button type="submit" class="btn btn-primary">send...</button>
+				</form>
+				<h6>Responses:</h6>
+				<p id="responses" />
+			</div>
+			<div class="col-md-4">
+				<form id="publishform">
+					<div class="form-group">
+						<label for="text2publish">Publish Message</label> 
+						<input type="text" class="form-control" id="text2publish" placeholder="Hello it's me">
+					</div>
+					<button type="submit" class="btn btn-primary">publish...</button>
+				</form>
+				<h6>Publications:</h6>
+				<p id="publications" />
+			</div>			
+			<div class="col-md-4">
+				<ul class="list-group" id="serverHeartbeats">
+					<li class="list-group-item list-group-item-success">Server Heartbeats</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script src="../js/jquery-1.12.0.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/sockjs-0.3.4.min.js"></script>
+	<script src='../js/vertx-eventbus.js'></script>
+
+<script>
+
+	var eb = new EventBus('http://localhost:8080/eventbus');
+
+	eb.onopen = function() {
+		eb.registerHandler("web.server2client.heartbeat", function(err, reply) {
+			$("#serverHeartbeats").append('<li class="list-group-item">' + reply.body + '</li>');
+		});
+		
+		eb.registerHandler("web.server2client.publish.test", function(err, reply) {
+			$("#publications").append(reply.body + "<br>");
+		});
+	}
+
+	$("#sendform").submit(function(event) {
+		event.preventDefault();
+		eb.send('web.client2server.send.test', $('#text2send').val(), function(err, reply) {
+			$("#responses").append(reply.body + "<br>");
+		});
+	});
+	
+	$("#publishform").submit(function(event) {
+		event.preventDefault();
+		eb.publish('web.client2server.publish.test', $('#text2publish').val());
+	});
+</script>
+</body>
+</html>

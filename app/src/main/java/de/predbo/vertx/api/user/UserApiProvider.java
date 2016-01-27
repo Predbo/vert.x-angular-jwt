@@ -6,10 +6,9 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
-import de.predbo.vertx.Provider;
 
 
-public class UserApiProvider implements Provider {
+public class UserApiProvider {
 	
 	private static final Logger _logger = LoggerFactory.getLogger(UserApiProvider.class);
 	
@@ -22,7 +21,6 @@ public class UserApiProvider implements Provider {
 
 
 
-	@Override
 	public Router createSubRouter(Vertx vertx) {
 		Router router = Router.router(vertx);
 		router.get("/users").handler(this::getAllUsers);

@@ -11,8 +11,8 @@ public class MainVerticle extends AbstractVerticle {
 	@Override
 	public void start() {
 		vertx.eventBus().consumer("services.internal.logging", message -> {
-			_logger.info(message.body());
-			message.reply("Logging MicroService is up and running fine");
+			_logger.info("Request from MicroService: " + message.body());
+			message.reply("Pong");
 		});
 	}
 }

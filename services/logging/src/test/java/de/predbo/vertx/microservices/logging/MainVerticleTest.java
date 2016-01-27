@@ -1,6 +1,5 @@
 package de.predbo.vertx.microservices.logging;
 
-import static org.junit.Assert.fail;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.TestContext;
