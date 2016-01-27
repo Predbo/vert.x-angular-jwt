@@ -71,16 +71,6 @@ public class TestStaticResourceHandler extends MainVerticaleTestBase {
 		context.assertTrue(jsonResponse.getBody().contains("you successfully have entered protected area"));
 	}
 	
-	@Test
-	public void assureSpecialLoggingIsDoneAsynchonous(TestContext context) throws UnirestException {
-		for (int i = 1; i <=10; i++) {
-			HttpResponse<String> jsonResponse = Unirest.get(BASE_URL + "specialLogging" + i).asString();
-			System.out.println(i + " Response was: " + jsonResponse.getBody());
-			context.assertTrue(jsonResponse.getBody().contains("direct http response, while logging is still ongoing"));
-		}
-		System.out.println("All Testrequests successfully completed, waiting for special logging output...");
-	}
-	
 	@Test 
 	public void assureThatAuthenticatedAccessViaBasicAuthToProtectedIndexWorks(TestContext context) throws UnirestException {
 		HttpResponse<String> jsonResponse = Unirest.get(BASE_URL + "protected/index.html").header("Authorization", _validJwtTokenAsAuthHeader).asString();

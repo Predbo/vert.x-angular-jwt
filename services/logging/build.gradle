@@ -1,0 +1,68 @@
+import com.sun.javafx.runtime.SystemProperties;
+
+plugins {
+	id 'java'
+	id 'application'
+	id 'eclipse'
+	id 'com.github.johnrengelman.shadow' version '1.2.2'
+}
+
+repositories {
+	mavenCentral()
+	maven { url = 'http://oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+version = '3.2.0'
+sourceCompatibility = '1.8'
+mainClassName = 'de.predbo.vertx.Log4JLauncher'
+
+dependencies {
+	compile "io.vertx:vertx-core:$version"
+	compile "io.vertx:vertx-hazelcast:$version"
+	compile "log4j:log4j:1.2.17"
+	
+
+	testCompile "io.vertx:vertx-unit:$version"
+	testCompile "junit:junit:4.12"
+}
+
+test {
+	testLogging {
+		events 'passed'
+	}
+}
+
+def mainVerticle = "java:de.predbo.vertx.microservices.logging.MainVerticle"
+
+// Vert.x watches for file changes in all subdirectories of src/ but only for files with .java extension
+def watchForChange = 'src/**/*'
+
+// Vert.x will call this task on changes
+def doOnChange = './gradlew classes'
+
+run {
+
+	args = ["run",
+		mainVerticle
+		, "--redeploy=$watchForChange"
+		, "--launcher-class=$mainClassName"
+		, "--on-redeploy=$doOnChange"
+		]
+	
+}
+
+
+
+shadowJar {
+	classifier = 'fat'
+	manifest {
+		attributes 'Main-Verticle': mainVerticle
+	}
+	mergeServiceFiles {
+		include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+	}
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.8'
+}

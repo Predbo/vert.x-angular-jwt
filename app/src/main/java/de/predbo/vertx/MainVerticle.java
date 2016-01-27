@@ -1,9 +1,10 @@
 package de.predbo.vertx;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.DeploymentOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.CookieHandler;
@@ -15,6 +16,8 @@ import de.predbo.vertx.handler.IssueTokenHandler;
 import de.predbo.vertx.handler.JwtAuthHandler;
 
 public class MainVerticle extends AbstractVerticle {
+	
+	private static final Logger _logger = LoggerFactory.getLogger(MainVerticle.class);
 	
 	private final UserRegistry _userRegistry = new UserRegistry();
 	
@@ -30,16 +33,24 @@ public class MainVerticle extends AbstractVerticle {
 		JWTAuth jwtAuthProvider = JWTAuth.create(vertx, authConfig);
 		UserApiProvider userApiProvider = new UserApiProvider(_userRegistry);
 		EventBus eventBus = vertx.eventBus();
-	    vertx.deployVerticle("de.predbo.vertx.microservices.LoggingService", new DeploymentOptions());
-	    System.out.println("[Main] Running in " + Thread.currentThread().getName());
 		
 		Router router = Router.router(vertx);
 		router.route().handler(CookieHandler.create());
 		
-		router.route("/specialLogging*").handler(routingContext -> {
+		router.route("/loggingMicroService").handler(routingContext -> {
 			String eventBusMessage = "received request for path: '" + routingContext.normalisedPath() + "'";
-			eventBus.send("services.internal.logging", eventBusMessage);
-			routingContext.response().end("direct http response, while logging is still ongoing");
+			eventBus.send("services.internal.logging", eventBusMessage, asyncResult -> {
+				String response = "";
+				if (asyncResult.succeeded()) {
+					response = asyncResult.result().body().toString();
+					_logger.info("response from logging microservice: " + response);
+				} else {
+					_logger.warn("no response from logging microservice");
+					response = "Logging MicroService currently not available";
+					routingContext.response().setStatusCode(404);
+				}
+				routingContext.response().end(response);
+			});
 		});
 		
 		router.get("/issueToken").handler(IssueTokenHandler.create(jwtAuthProvider, _userRegistry));
